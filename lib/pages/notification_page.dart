@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../styles/styles.dart';
 import './widget/buttons.dart';
+import './home_page.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -17,6 +18,18 @@ class _NotificationPageState extends State<NotificationPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+         leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: ColorStyles.primary,
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            ); // Add functionality to navigate back
+          },
+        ),// Add functionality to navigate back
         title: Text(
           'Notifications',
           style: GoogleFonts.poppins(
