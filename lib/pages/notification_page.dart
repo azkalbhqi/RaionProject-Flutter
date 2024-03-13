@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../styles/styles.dart';
 import './widget/buttons.dart';
-import './home_page.dart';
+import 'interface.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -25,7 +25,7 @@ class _NotificationPageState extends State<NotificationPage>{
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const HomePage(),
+                builder: (context) => const Interface(),
               ),
             ); // Add functionality to navigate back
           },

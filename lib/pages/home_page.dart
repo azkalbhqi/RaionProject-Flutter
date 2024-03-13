@@ -1,10 +1,13 @@
-// ignore_for_file: use_key_in_widget_constructors, unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: unused_import, empty_constructor_bodies, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:raionapp/pages/register_page.dart';
+import 'package:raionapp/pages/who_are_you.dart';
 import '../styles/styles.dart';
+import 'interface.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import './widget/buttons.dart';
-import './notification_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,128 +16,83 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  // Placeholder balance value
-  double totalBalance = 10000.0; // Example total balance
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0), // Set the preferred height of the AppBar
-        child: Container(
-          margin: EdgeInsets.only(top: 30),
-          color: ColorStyles.primary,
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+      
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            // Total Portfolio Summary
+            Card(
+              elevation: 3,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      // Add your profile picture here
-                      backgroundColor: Colors.white,
-                      radius: 20,
+                    Text(
+                      'Total Portfolio Summary',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome!',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white, // Set the text color to white
-                          ),
-                        ),
-                        Text(
-                          'Your Name',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white, // Set the text color to white
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: 16),
+                    Text(
+                      'Total Value: \$10,000',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      'Total Profit/Loss: +\$1,500 (15%)',
+                      style: TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
-                // Display total balance
-                Text(
-                  'Total Balance: \$${totalBalance.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white, // Set the text color to white
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.notifications),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NotificationPage()),
-                  );
-                },
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            // Trending Stocks
+            Card(
+              elevation: 3,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Trending Stocks',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    ListTile(
+                      title: Text('Apple Inc.'),
+                      subtitle: Text('AAPL'),
+                      trailing: Text('\$150.00 (+2.5%)'),
+                    ),
+                    ListTile(
+                      title: Text('Google Inc.'),
+                      subtitle: Text('GOOGL'),
+                      trailing: Text('\$2,000.00 (+1.8%)'),
+                    ),
+                    ListTile(
+                      title: Text('Amazon.com Inc.'),
+                      subtitle: Text('AMZN'),
+                      trailing: Text('\$3,500.00 (-0.5%)'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Market',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: 'Wallet',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue, // Change the color of the selected item
-        onTap: _onItemTapped,
       ),
     );
   }
-
-  // Widget options for the bottom navigation bar
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Market',
-      style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Wallet',
-      style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-    ),
-  ];
 }

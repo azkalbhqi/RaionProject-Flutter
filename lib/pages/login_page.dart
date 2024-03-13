@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:raionapp/pages/register_page.dart';
 import 'package:raionapp/pages/who_are_you.dart';
 import '../styles/styles.dart';
-import './home_page.dart';
+import 'interface.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import './widget/buttons.dart';
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const HomePage()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const Interface()));
                   },
                   child: Text('Sign In'),
                 ),
