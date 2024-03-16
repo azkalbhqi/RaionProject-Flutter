@@ -66,10 +66,5 @@ class _NotificationPageState extends State<NotificationPage>{
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: NotificationPage(),
-  ));
-}
+
 

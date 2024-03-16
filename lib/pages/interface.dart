@@ -43,7 +43,7 @@ class _InterfaceState extends State<Interface> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Capital Venture Investment Broker'),
+        title: Text('CampVestor App'),
         centerTitle: true,
         actions: [
           IconButton(
