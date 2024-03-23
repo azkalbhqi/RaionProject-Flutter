@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:raionapp/pages/investor_prof_page.dart';
@@ -15,9 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late double totalPortfolioValue;
-  late String userName;
-  late String profileImageUrl;
+  String userName = '';
+  String profileImageUrl = '';
+  double totalPortfolioValue = 0;
 
   @override
   void initState() {
@@ -188,5 +189,10 @@ class _HomePageState extends State<HomePage> {
       print('Error: $error');
       return null;
     }
+  }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('profileImageUrl', profileImageUrl));
   }
 }
