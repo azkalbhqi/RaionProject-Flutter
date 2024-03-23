@@ -1,10 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:CampVestor/pages/register_page.dart';
+import 'package:CampVestor/pages/widget/buttons.dart';
+import 'package:CampVestor/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:raionapp/pages/interface.dart';
+import 'package:CampVestor/pages/interface.dart';
 
 class User {
   final String userId;
@@ -168,22 +172,26 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
             const SizedBox(height: 20),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () {
-                    // Navigate to RegisterPage
-                  },
-                  child: const Text("I don't have an account"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
+                Buttons(
+                  onClicked: () async {
                     // Call signIn method when the Sign In button is pressed
                     await signIn();
                   },
-                  child: const Text('Sign In'),
+                  text: ('Sign In'),
+                  width: MediaQuery.of(context).size.width, 
+                  backgroundColor: ColorStyles.primary, 
+                  fontColor: ColorStyles.white
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                  },
+                  child: const Text("I don't have an account"),
+                ),
+                
               ],
             ),
           ],

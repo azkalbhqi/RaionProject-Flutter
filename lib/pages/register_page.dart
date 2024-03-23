@@ -5,8 +5,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:raionapp/pages/login_page.dart';
-import 'package:raionapp/pages/who_are_you.dart';
+import 'package:CampVestor/pages/login_page.dart';
+import 'package:CampVestor/pages/who_are_you.dart';
 import '../styles/styles.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -172,9 +172,17 @@ class _RegisterPageState extends State<RegisterPage> {
               obscureText: true,
             ),
             const SizedBox(height: 20),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Buttons(
+                  onClicked: registerUser,
+                  text: 'Register',
+                  width: MediaQuery.of(context).size.width, 
+                  backgroundColor: ColorStyles.primary, 
+                  fontColor: ColorStyles.white
+
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -186,10 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                   child: const Text("I have an account"),
                 ),
-                ElevatedButton(
-                  onPressed: registerUser,
-                  child: const Text('Register'),
-                ),
+                
               ],
             ),
           ],

@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:raionapp/pages/home_page.dart';
-import 'package:raionapp/pages/market_page.dart';
-import 'package:raionapp/pages/portofolio_page.dart';
+import 'package:CampVestor/pages/home_page.dart';
+import 'package:CampVestor/pages/market_page.dart';
+import 'package:CampVestor/pages/portofolio_page.dart';
 import './widget/buttons.dart';
 import './notification_page.dart';
 import './login_page.dart';

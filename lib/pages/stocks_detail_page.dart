@@ -1,8 +1,10 @@
+import 'package:CampVestor/pages/widget/buttons.dart';
+import 'package:CampVestor/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:raionapp/pages/market_page.dart';
+import 'package:CampVestor/pages/market_page.dart';
 
 class StockDetails extends StatefulWidget {
   final Stock stock;
@@ -135,9 +137,13 @@ class _StockDetailsState extends State<StockDetails> {
               style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: buyStock,
-              child: const Text('Buy'),
+            Buttons(
+              onClicked: buyStock,
+              text: 'Buy',
+              width: MediaQuery.of(context).size.width, 
+              backgroundColor: ColorStyles.primary, 
+              fontColor: ColorStyles.white
+              
             ),
           ],
         ),

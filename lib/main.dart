@@ -1,8 +1,8 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
-import 'package:raionapp/pages/market_page.dart';
-import 'package:raionapp/pages/register_page.dart';
+import 'package:CampVestor/pages/market_page.dart';
+import 'package:CampVestor/pages/register_page.dart';
 import './pages/onboarding_page.dart';
 import 'pages/interface.dart';
 

@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:raionapp/pages/investor_prof_page.dart';
-import 'package:raionapp/styles/styles.dart';
+import 'package:CampVestor/pages/investor_prof_page.dart';
+import 'package:CampVestor/styles/styles.dart';
 
 class HomePage extends StatefulWidget {
   final String userName;
@@ -105,8 +105,15 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const Text(
+                            'Welcome', 
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Text(
-                            'Welcome, $userName', 
+                            userName, 
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -126,6 +133,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+
+            
             const SizedBox(height: 20),
             // Total Portfolio Summary
             FutureBuilder<double?>(

@@ -1,8 +1,8 @@
 // ignore_for_file: unused_import, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:raionapp/pages/onboarding_page.dart';
-import 'package:raionapp/pages/register_page.dart';
+import 'package:CampVestor/pages/onboarding_page.dart';
+import 'package:CampVestor/pages/register_page.dart';
 import '../styles/styles.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';

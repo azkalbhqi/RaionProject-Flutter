@@ -1,11 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors, unused_import, prefer_const_constructors
 
+import 'package:CampVestor/pages/widget/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:raionapp/pages/edit_profile_page.dart';
-import 'package:raionapp/pages/login_page.dart'; // Import the login page
+import 'package:CampVestor/pages/edit_profile_page.dart';
+import 'package:CampVestor/pages/login_page.dart'; // Import the login page
 import '../styles/styles.dart';
 
 class InvestorProfile extends StatefulWidget {
@@ -107,10 +108,12 @@ class _InvestorProfileState extends State<InvestorProfile> {
             ),
             SizedBox(height: 10),
             // Red logout button
-            ElevatedButton(
-              onPressed: logout,
-              style: ElevatedButton.styleFrom( backgroundColor:Colors.red),
-              child: Text('Logout'),
+            Buttons(
+              onClicked: logout,
+              text: 'Logout',
+              width: MediaQuery.of(context).size.width, 
+              backgroundColor: ColorStyles.red, 
+              fontColor: ColorStyles.white
             ),
           ],
         ),

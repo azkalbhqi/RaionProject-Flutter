@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:raionapp/pages/interface.dart';
-import 'package:raionapp/styles/styles.dart';
+import 'package:CampVestor/pages/interface.dart';
+import 'package:CampVestor/styles/styles.dart';
 
 class NotificationPage extends StatefulWidget {
   final String userName; // Pass the user name from the Interface widget
