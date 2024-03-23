@@ -1,70 +1,128 @@
-// ignore_for_file: use_key_in_widget_constructors, unused_import, prefer_const_constructors
+// ignore_for_file: unnecessary_null_comparison, use_key_in_widget_constructors
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../styles/styles.dart';
-import './widget/buttons.dart';
-import 'interface.dart';
+import 'package:http/http.dart' as http;
+import 'package:raionapp/pages/interface.dart';
+import 'package:raionapp/styles/styles.dart';
 
 class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+  final String userName; // Pass the user name from the Interface widget
+
+  const NotificationPage({Key? key, required this.userName}) : super(key: key);
 
   @override
   State<NotificationPage> createState() => _NotificationPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage>{
+class _NotificationPageState extends State<NotificationPage> {
+  late List<NotificationData> notifications;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNotifications();
+  }
+
+  Future<void> fetchNotifications() async {
+    final response = await http.get(Uri.parse('https://65fd90629fc4425c653243d7.mockapi.io/log'));
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      setState(() {
+        notifications = responseData
+            .map((data) => NotificationData.fromJson(data))
+            .toList();
+        notifications.sort((a, b) => b.timestamp.compareTo(a.timestamp)); // Sort by timestamp
+      });
+    } else {
+      throw Exception('Failed to load notifications');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
           color: ColorStyles.primary,
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const Interface(),
+                builder: (context) => Interface(userName: widget.userName), // Pass the user name
               ),
-            ); // Add functionality to navigate back
+            );
           },
-        ),// Add functionality to navigate back
-        title: Text(
-          'Notifications',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
         ),
-        centerTitle: true,
+        title: const Text('Notifications'),
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            leading: Icon(Icons.notifications_active),
-            title: Text('Notification 1'),
-            subtitle: Text('This is the first notification'),
-            onTap: () {
-              // Handle tap on notification 1
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.notifications_active),
-            title: Text('Notification 2'),
-            subtitle: Text('This is the second notification'),
-            onTap: () {
-              // Handle tap on notification 2
-            },
-          ),
-          Divider(),
-          // Add more notifications as needed
-        ],
-      ),
+      body: notifications != null
+          ? ListView.builder(
+              itemCount: notifications.length,
+              itemBuilder: (context, index) {
+                final notification = notifications[index];
+                return ListTile(
+                  leading: const Icon(Icons.notifications),
+                  title: Text(notification.name),
+                  subtitle: Text('${notification.price} at ${notification.timestamp}'),
+                  trailing: notification.buy
+                      ? const Badge(color: Colors.green, text: 'Buy')
+                      : const Badge(color: Colors.red, text: 'Sell'),
+                );
+              },
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }
 
+class NotificationData {
+  final String name;
+  final double price;
+  final String timestamp;
+  final bool buy;
 
+  NotificationData({
+    required this.name,
+    required this.price,
+    required this.timestamp,
+    required this.buy,
+  });
 
+  factory NotificationData.fromJson(Map<String, dynamic> json) {
+    return NotificationData(
+      name: json['name'],
+      price: json['price'].toDouble(),
+      timestamp: json['timestamp'],
+      buy: json['buy'],
+    );
+  }
+}
+
+class Badge extends StatelessWidget {
+  final Color color;
+  final String text;
+
+  const Badge({
+    required this.color,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}

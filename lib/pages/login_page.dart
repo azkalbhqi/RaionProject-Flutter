@@ -1,30 +1,149 @@
-// ignore_for_file: unused_import, empty_constructor_bodies, prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:raionapp/pages/register_page.dart';
-import 'package:raionapp/pages/who_are_you.dart';
-import '../styles/styles.dart';
-import 'interface.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import './widget/buttons.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:raionapp/pages/interface.dart';
+
+class User {
+  final String userId;
+  final String username;
+  final String email;
+
+  User({
+    required this.userId,
+    required this.username,
+    required this.email,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      userId: json['id'],
+      username: json['username'],
+      email: json['email'],
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<User?> signIn() async {
+    try {
+      // Fetch user data from API
+      final response = await http.get(
+        Uri.parse('https://65fd98169fc4425c6532555f.mockapi.io/users'),
+      );
+
+      if (response.statusCode == 200) {
+        // Decode the response body
+        final List<dynamic> userData = jsonDecode(response.body);
+
+        if (userData.isNotEmpty) {
+          // Assuming email is unique, find user data by email
+          final userMap = userData.firstWhere((user) => user['email'] == _emailController.text);
+          final user = User.fromJson(userMap);
+
+          // Navigate to another page (e.g., HomePage) passing the User instance
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Interface(userName: user.username),
+            ),
+          );
+
+          return user;
+        } else {
+          // Handle empty response
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Error'),
+              content: const Text('No user data found.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      } else {
+        // Handle unsuccessful response from the API
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Error'),
+            content: Text('Failed to fetch user data. Status code: ${response.statusCode}'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (error) {
+      // Handle errors that might occur during login or API request
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text('An error occurred: $error'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Return null if an error occurs
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Login",
-          style: GoogleFonts.poppins(
+          style: TextStyle(
             fontSize: 16,
+            fontFamily: 'Poppins',
           ),
         ),
         centerTitle: true,
@@ -36,32 +155,34 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             // Add your login form fields here
             TextField(
-              decoration: InputDecoration(
+              controller: _emailController,
+              decoration: const InputDecoration(
                 labelText: 'Email',
               ),
             ),
             TextField(
-              decoration: InputDecoration(
+              controller: _passwordController,
+              decoration: const InputDecoration(
                 labelText: 'Password',
               ),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
-                   
+                    // Navigate to RegisterPage
                   },
-                  child: Text("I don't have an account"),
+                  child: const Text("I don't have an account"),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const Interface()));
+                  onPressed: () async {
+                    // Call signIn method when the Sign In button is pressed
+                    await signIn();
                   },
-                  child: Text('Sign In'),
+                  child: const Text('Sign In'),
                 ),
               ],
             ),
