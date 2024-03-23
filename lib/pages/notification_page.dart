@@ -8,8 +8,9 @@ import 'package:raionapp/styles/styles.dart';
 
 class NotificationPage extends StatefulWidget {
   final String userName; // Pass the user name from the Interface widget
+  final String userId;
 
-  const NotificationPage({Key? key, required this.userName}) : super(key: key);
+  const NotificationPage({Key? key, required this.userName, required this.userId}) : super(key: key);
 
   @override
   State<NotificationPage> createState() => _NotificationPageState();
@@ -50,7 +51,7 @@ class _NotificationPageState extends State<NotificationPage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => Interface(userName: widget.userName), // Pass the user name
+                builder: (context) => Interface(userName: widget.userName, userId: widget.userId,), // Pass the user name
               ),
             );
           },

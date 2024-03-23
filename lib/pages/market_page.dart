@@ -68,7 +68,7 @@ class _MarketPageState extends State<MarketPage> {
                   child: ListTile(
                     title: Text(stock.name),
                     subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text('Price: \$${stock.price.toStringAsFixed(2)}'),
                       ],

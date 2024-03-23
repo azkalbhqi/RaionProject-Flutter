@@ -8,4 +8,5 @@ class ColorStyles {
   static Color white = const Color(0xFFFFFFFF);
   static Color greyBg = const Color(0xFFF8F8F8);
   static Color selectionBlack = const Color(0xFF1A1D3E);
+  static Color red = Color.fromARGB(255, 233, 6, 40);
 }

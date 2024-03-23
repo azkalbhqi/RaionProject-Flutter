@@ -1,5 +1,3 @@
-// ignore_for_file: use_rethrow_when_possible
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -8,8 +6,9 @@ import 'package:raionapp/styles/styles.dart';
 
 class HomePage extends StatefulWidget {
   final String userName;
+  final String id;
 
-  const HomePage({Key? key, required this.userName}) : super(key: key);
+  const HomePage({Key? key, required this.userName, required this.id }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,11 +16,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late double totalPortfolioValue;
+  late String userName;
+  late String profileImageUrl;
 
   @override
   void initState() {
     super.initState();
+    fetchUserData();
     fetchPortfolioData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      final response = await http.get(Uri.parse('https://65fd98169fc4425c6532555f.mockapi.io/users/${widget.id}'));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> userData = json.decode(response.body);
+        setState(() {
+          userName = userData['username'];
+          profileImageUrl = userData['pp'];
+        });
+      } else {
+        throw Exception('Failed to load user data');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 
   Future<void> fetchPortfolioData() async {
@@ -66,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const InvestorProfile()),
+                    MaterialPageRoute(builder: (context) => InvestorProfile(id: widget.id)),
                   );
                 },
                 child: Container(
@@ -77,16 +96,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 30,
-                        backgroundImage: AssetImage('assets/profile_image.jpg'), 
+                        backgroundImage:  NetworkImage(profileImageUrl),
                       ),
                       const SizedBox(width: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Welcome, ${widget.userName}', 
+                            'Welcome, $userName', 
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -108,7 +127,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             // Total Portfolio Summary
-            FutureBuilder<double>(
+            FutureBuilder<double?>(
               future: PortfolioData(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -150,7 +169,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<double> PortfolioData() async {
+  Future<double?> PortfolioData() async {
     try {
       final response = await http.get(Uri.parse('https://65fd90629fc4425c653243d7.mockapi.io/stocks'));
       if (response.statusCode == 200) {
@@ -163,11 +182,11 @@ class _HomePageState extends State<HomePage> {
         }
         return totalValue;
       } else {
-        throw Exception('Failed to load portfolio data');
+        return null;
       }
     } catch (error) {
       print('Error: $error');
-      throw error;
+      return null;
     }
   }
 }

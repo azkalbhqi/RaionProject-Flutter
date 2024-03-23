@@ -11,8 +11,9 @@ import './login_page.dart';
 
 class Interface extends StatefulWidget {
   final String userName;
+  final String userId;
 
-  const Interface({Key? key, required this.userName}) : super(key: key);
+  const Interface({Key? key, required this.userName, required this.userId}) : super(key: key);
 
   @override
   State<Interface> createState() => _InterfaceState();
@@ -51,7 +52,7 @@ class _InterfaceState extends State<Interface> {
           IconButton(
             icon: Icon(Icons.notifications),
             onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NotificationPage(userName: widget.userName,)));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NotificationPage(userName: widget.userName, userId: widget.userId,)));
             },
           ),
         ],
@@ -64,7 +65,7 @@ class _InterfaceState extends State<Interface> {
           });
         },
         children: [
-          HomePage(userName: widget.userName),
+          HomePage(userName: widget.userName, id: widget.userId),
           MarketPage(),
           PortofolioPage(),
         ],
